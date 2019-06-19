@@ -4,6 +4,9 @@ Recent malware research shows that there is an increase in malware that is using
 These tools demonstrates the use of direct System Calls and API unhooking and combine these techniques in a proof of concept code which can be used to create a LSASS memory dump using Cobalt Strike, 
 while not touching disk and evading AV/EDR monitored user-mode API calls.
 
+More info about the used techniques can be found on the following Blog: 
+https://outflank.nl/blog/2019/06/19/red-team-tactics-combining-direct-system-calls-and-srdi-to-bypass-av-edr/
+
 Two version of the code are included:
 
 An executable version and a DLL version of the code. 
@@ -23,8 +26,5 @@ Compile instructions:
 This project is written in C and assembly.
 You can use Visual Studio to compile it from source.
 ```
-
-More info about the used techniques can be found on the following Blog: 
-https://outflank.nl/blog/2019/06/19/red-team-tactics-combining-direct-system-calls-and-srdi-to-bypass-av-edr/
 
 The sRDI code can be found here: https://github.com/monoxgas/sRDI
