@@ -24,5 +24,7 @@ This project is written in C and assembly.
 You can use Visual Studio to compile it from source.
 ```
 
-More info about the used techniques can be found on the following Blog:
+More info about the used techniques can be found on the following Blog: 
+https://outflank.nl/blog/2019/06/19/red-team-tactics-combining-direct-system-calls-and-srdi-to-bypass-av-edr/
+
 The sRDI code can be found here: https://github.com/monoxgas/sRDI
