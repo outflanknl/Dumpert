@@ -40,9 +40,10 @@ BOOL Unhook_NativeAPI(IN PWIN_VER_INFO pWinVerInfo) {
 
 	LPVOID lpProcAddress = GetProcAddress(LoadLibrary(L"ntdll.dll"), pWinVerInfo->lpApiCall);
 
+	LPVOID lpBaseAddress = lpProcAddress;
 	ULONG OldProtection, NewProtection;
 	SIZE_T uSize = 10;
-	NTSTATUS status = ZwProtectVirtualMemory(GetCurrentProcess(), &lpProcAddress, &uSize, PAGE_EXECUTE_READWRITE, &OldProtection);
+	NTSTATUS status = ZwProtectVirtualMemory(GetCurrentProcess(), &lpBaseAddress, &uSize, PAGE_EXECUTE_READWRITE, &OldProtection);
 	if (status != STATUS_SUCCESS) {
 		return FALSE;
 	}
@@ -52,7 +53,7 @@ BOOL Unhook_NativeAPI(IN PWIN_VER_INFO pWinVerInfo) {
 		return FALSE;
 	}
 
-	status = ZwProtectVirtualMemory(GetCurrentProcess(), &lpProcAddress, &uSize, OldProtection, &NewProtection);
+	status = ZwProtectVirtualMemory(GetCurrentProcess(), &lpBaseAddress, &uSize, OldProtection, &NewProtection);
 	if (status != STATUS_SUCCESS) {
 		return FALSE;
 	}

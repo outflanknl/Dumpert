@@ -44,9 +44,10 @@ BOOL Unhook_NativeAPI(IN PWIN_VER_INFO pWinVerInfo) {
 	printf("	[+] %s System call nr is: 0x%x\n", pWinVerInfo->lpApiCall, AssemblyBytes[4]);
 	printf("	[+] Unhooking %s.\n", pWinVerInfo->lpApiCall);
 
+	LPVOID lpBaseAddress = lpProcAddress;
 	ULONG OldProtection, NewProtection;
 	SIZE_T uSize = 10;
-	NTSTATUS status = ZwProtectVirtualMemory(GetCurrentProcess(), &lpProcAddress, &uSize, PAGE_EXECUTE_READWRITE, &OldProtection);
+	NTSTATUS status = ZwProtectVirtualMemory(GetCurrentProcess(), &lpBaseAddress, &uSize, PAGE_EXECUTE_READWRITE, &OldProtection);
 	if (status != STATUS_SUCCESS) {
 		wprintf(L"	[!] ZwProtectVirtualMemory failed.\n");
 		return FALSE;
@@ -58,7 +59,7 @@ BOOL Unhook_NativeAPI(IN PWIN_VER_INFO pWinVerInfo) {
 		return FALSE;
 	}
 
-	status = ZwProtectVirtualMemory(GetCurrentProcess(), &lpProcAddress, &uSize, OldProtection, &NewProtection);
+	status = ZwProtectVirtualMemory(GetCurrentProcess(), &lpBaseAddress, &uSize, OldProtection, &NewProtection);
 	if (status != STATUS_SUCCESS) {
 		wprintf(L"	[!] ZwProtectVirtualMemory failed.\n");
 		return FALSE;
